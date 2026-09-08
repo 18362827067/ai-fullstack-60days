@@ -1,4 +1,5 @@
 import { useState } from "react";
+import WorkOrderList from "./day09/WorkOrderList";
 
 interface WorkOrderInfoProps  {
   orderNumber: string;
@@ -59,11 +60,14 @@ function WorkOrderInfo({
 function App() {
   // 在这里使用 WorkOrderInfo 组件
   return (
-    <WorkOrderInfo 
-      orderNumber="WO-001"
-      planQuantity={1000}
-      completeQuantity={350}
-    />
+    <>
+      <WorkOrderInfo 
+        orderNumber="WO-001"
+        planQuantity={1000}
+        completeQuantity={350}
+      />
+      <WorkOrderList />
+    </> 
   )
 }
 
