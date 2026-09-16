@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./day10/HomePage";
 import { WorkOrderPage } from "./day10/WorkOrderPage";
 import WorkOrderDetailPage from "./day10/WorkOrderDetailPage";
+import WorkOrderApiPage from "./day11/WorkOrderApiPage";
 import Layout from "./day10/Layout";
 
 // interface WorkOrderInfoProps  {
@@ -85,6 +86,10 @@ function App() {
           <Route
             path="/work-orders/:id"
             element={<WorkOrderDetailPage />}
+          />
+          <Route 
+            path="/work-orders-api"
+            element={<WorkOrderApiPage />}
           />
           <Route path="*" element={<p>页面不存在</p>} />
         </Route>
