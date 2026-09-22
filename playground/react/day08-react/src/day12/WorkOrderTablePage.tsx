@@ -32,7 +32,7 @@ interface WorkOrderFormValues {
 function WorkOrderTablePage() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [editingWorkOrder, setEditingWorkOrder] = useState<WorkOrder | null>(null);
