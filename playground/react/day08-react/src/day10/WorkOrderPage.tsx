@@ -1,4 +1,4 @@
-import { workOrders } from "./workOrders";3
+import { workOrders } from "./workOrders";
 import { Link } from "react-router-dom";
 
 function WorkOrderPage() {
