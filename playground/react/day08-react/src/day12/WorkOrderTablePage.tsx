@@ -18,12 +18,14 @@ interface WorkOrder {
     orderNumber: string;
     planQuantity: number;
     status: "CREATED" | "PROCESSING" | "COMPLETED";
+    priority: "LOW" | "MEDIUM" | "HIGH";
 }
 
 interface WorkOrderFormValues {
     orderNumber: string;
     planQuantity: number;
     status: WorkOrder["status"];
+    priority: WorkOrder["priority"];
 }
 
 function WorkOrderTablePage() {
@@ -42,13 +44,15 @@ function WorkOrderTablePage() {
                 id: 1,
                 orderNumber: "WO-001",
                 planQuantity: 1000,
-                status: "PROCESSING"
+                status: "PROCESSING",
+                priority: "HIGH"
             },
             {
                 id: 2,
                 orderNumber: "WO-002",
                 planQuantity: 2000,
-                status: "COMPLETED"
+                status: "COMPLETED",
+                priority: "MEDIUM"
             }
         ]
     );
@@ -83,6 +87,19 @@ function WorkOrderTablePage() {
             }
         },
         {
+            title: "优先级",
+            dataIndex: "priority",
+            render: (value: WorkOrder["priority"]) => {
+                if (value === "HIGH") {
+                    return <Tag color="red">高</Tag>
+                } else if (value === "MEDIUM") {
+                    return <Tag color="orange">中</Tag>
+                }
+
+                return <Tag>低</Tag>
+            }
+        },
+        {
             title: "操作",
             render: (_,record) => {
                 return (
@@ -97,7 +114,8 @@ function WorkOrderTablePage() {
                                     form.setFieldsValue({
                                         orderNumber: record.orderNumber,
                                         planQuantity: record.planQuantity,
-                                        status: record.status
+                                        status: record.status,
+                                        priority: record.priority
                                     });
 
                                     setOpen(true);
@@ -278,6 +296,33 @@ function WorkOrderTablePage() {
                                 {
                                     label: "已完成",
                                     value: "COMPLETED"
+                                }
+                            ]}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="优先级"
+                        name="priority"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请选择优先级",
+                            }
+                        ]}
+                    >
+                        <Select
+                            options={[
+                                {
+                                    label: "低",
+                                    value: "LOW"
+                                },
+                                {
+                                    label: "中",
+                                    value: "MEDIUM"
+                                },
+                                {
+                                    label: "高",
+                                    value: "HIGH"
                                 }
                             ]}
                         />
