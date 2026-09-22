@@ -11,6 +11,7 @@ import {
 } from "antd";
 import type { TableProps } from "antd";
 import { useState, useRef, useEffect } from "react";
+import type { Key } from "react";
 import * as echarts from "echarts";
 
 interface WorkOrder {
@@ -35,6 +36,9 @@ function WorkOrderTablePage() {
     const [form] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [editingWorkOrder, setEditingWorkOrder] = useState<WorkOrder | null>(null);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+    const [batchOpen, setBatchOpen] = useState(false);
+    const [batchForm] = Form.useForm<{ status: WorkOrder["status"] }>();
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstanceRef = useRef<echarts.ECharts | null>(null);
 
@@ -196,6 +200,17 @@ function WorkOrderTablePage() {
             >
                 新增工单
             </Button>
+            <Button
+                disabled={selectedRowKeys.length === 0}
+                onClick={
+                    () => {
+                        batchForm.resetFields();
+                        setBatchOpen(true);
+                    }
+                }
+            >
+                批量修改状态
+            </Button>
             <Modal
                 title={editingWorkOrder === null ? "新增工单": "编辑工单"}
                 open={open}
@@ -337,11 +352,86 @@ function WorkOrderTablePage() {
                     </Button>
                 </Form>
             </Modal>
+            <Modal
+                title="批量修改状态"
+                open={batchOpen}
+                onCancel={
+                    () => {
+                        setBatchOpen(false);
+                        batchForm.resetFields();
+                    }
+                }
+                footer={null}
+            >
+                <Form<{ status: WorkOrder["status"] }>
+                    form={batchForm}
+                    onFinish={
+                        (value) => {
+                            setWorkOrders(
+                                (prev) =>
+                                    prev.map(
+                                        (item) =>
+                                            selectedRowKeys.includes(item.id)
+                                            ? {
+                                                ...item,
+                                                status: value.status
+                                            }
+                                            : item
+                                    )
+                            );
+                            setBatchOpen(false);
+                            setSelectedRowKeys([]);
+                            batchForm.resetFields();
+                        }
+                    }
+                >
+                    <Form.Item
+                        label="状态"
+                        name="status"
+                        rules={[
+                            {
+                                required: true,
+                                message: "请选择状态",
+                            }
+                        ]}
+                    >
+                        <Select
+                            options={[
+                                {
+                                    label: "已创建",
+                                    value: "CREATED"
+                                },
+                                {
+                                    label: "处理中",
+                                    value: "PROCESSING"
+                                },
+                                {
+                                    label: "已完成",
+                                    value: "COMPLETED"
+                                }
+                            ]}
+                        />
+                    </Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                    >
+                        保存
+                    </Button>
+                </Form>
+            </Modal>
             <Table 
                 columns={columns}
                 dataSource={workOrders}
                 rowKey="id"
                 loading={loading}
+                rowSelection={{
+                    selectedRowKeys,
+                    preserveSelectedRowKeys: true,
+                    onChange: (keys) => {
+                        setSelectedRowKeys(keys);
+                    }
+                }}
                 pagination={{
                     current: page,
                     pageSize: limit,
