@@ -7,6 +7,7 @@ function Layout() {
             <Link to="/">首页</Link>
             <Link to="/work-orders">工单列表</Link>
             <Link to="/work-orders-api">API 工单列表</Link>
+            <Link to="/work-orders-table">表格工单列表</Link>
             <Outlet />
         </>
     )
