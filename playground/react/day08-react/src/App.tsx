@@ -6,6 +6,7 @@ import { WorkOrderPage } from "./day10/WorkOrderPage";
 import WorkOrderDetailPage from "./day10/WorkOrderDetailPage";
 import WorkOrderApiPage from "./day11/WorkOrderApiPage";
 import WorkOrderTablePage from "./day12/WorkOrderTablePage";
+import EquipmentPage from "./day14/EquipmentPage";
 import Layout from "./day10/Layout";
 
 // interface WorkOrderInfoProps  {
@@ -95,6 +96,10 @@ function App() {
           <Route 
             path="/work-orders-table"
             element={<WorkOrderTablePage />}
+          />
+          <Route 
+            path="/equipments"
+            element={<EquipmentPage />}
           />
           <Route path="*" element={<p>页面不存在</p>} />
         </Route>
